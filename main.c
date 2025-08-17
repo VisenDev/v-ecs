@@ -50,11 +50,21 @@ typedef struct {
 //void ecs_define_component(ecs_Ecs * e, const char * name, I/
 int * ecs_query(const ecs_Ecs *, const char *);
 
+enum {
+    physics_x,
+    physics_y,
+    physics_vel_x,
+    physics_vel_y,
+};
+
 int game_do_physics(void) {
-    int * iter = ecs_query(0, "physics");
+    int * iter = NULL;//ecs_query(0, "physics");
     while(iter) {
-        ecs_Component comp = ecs_get_component(&ecs, *iter, "physics");
+        ecs_Component c = {0}; /*get component "physics"*/
+        c.fields[physics_x].value.data = 1;
+        (void)c;
     }
+    return 0;
 }
 
 void ecs_component_define_prototype(ecs_Ecs * e, ecs_Component prototype) {
@@ -72,6 +82,10 @@ ecs_Id ecs_entity_new(ecs_Ecs * e) {
 }
 
 int main() {
+    int i[16] = {0};
+    i[17] = 1;
+    (void)i;
+
     ecs_Ecs  e = {0};
     ecs_component_define_prototype(&e, (ecs_Component){
         .name = "physics",
@@ -86,6 +100,7 @@ int main() {
     });
 
     ecs_Id new = ecs_entity_new(&e);
+    (void) new;
 
 }
 
